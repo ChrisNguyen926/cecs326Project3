@@ -1,4 +1,3 @@
-// Banker's Algorithm — Interactive C++
 // Build: g++ -std=c++17 -O2 BankersAlgo.cpp -o bankers
 // Run:   ./bankers
 
