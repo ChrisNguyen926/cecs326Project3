@@ -139,11 +139,12 @@ private:
 };
 
 static string SeqToString(const vector<int>& seq) {
-    string s;
+    string s = "[";
     for (size_t i = 0; i < seq.size(); ++i) {
-        s += "P" + std::to_string(seq[i]);
-        if (i + 1 < seq.size()) s += " -> ";
+        s += std::to_string(seq[i]);
+        if (i + 1 < seq.size()) s += ", ";
     }
+    s += "]";
     return s;
 }
 
@@ -209,7 +210,7 @@ int main() {
             } else if (res == BankersAlgorithm::RequestResult::NotAvailable) {
                 cout << "Resources not available. Process P" << pid << " must wait.\n\n";
             } else {
-                cout << "Request denied. System would become UNSAFE.\n\n";
+                cout << "Error: Request would lead to an unsafe state.\n\n";
             }
         } else if (choice == 3) {
             break;
