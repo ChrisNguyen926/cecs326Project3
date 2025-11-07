@@ -1,5 +1,5 @@
 // Build: g++ -std=c++17 -O2 BankersAlgo.cpp -o bankers
-// Run:   ./bankers
+// Run: ./bankers
 
 #include <iostream>
 #include <vector>
@@ -108,7 +108,7 @@ public:
         cout << "]\n\n";
     }
 
-    void PrintStateLikeScreenshot() const {
+    void PrintState() const {
         PrintHeader();
         PrintVectorLabeled("Available Vector (initially total resources available)", Available);
         PrintMatrixBlock("Maximum Matrix", Max);
@@ -167,7 +167,7 @@ int main() {
     };
 
     BankersAlgorithm ba(n, m, available, maxMat, alloc);
-    ba.PrintStateLikeScreenshot();
+    ba.PrintState();
 
     while (true) {
         cout << "Banker's Algorithm Test Menu:\n";
@@ -183,7 +183,7 @@ int main() {
             vector<int> seq;
             bool safe = ba.Safety(seq);
             if (safe) {
-                cout << "System is in a SAFE state.\n";
+                cout << "\nSystem is in a SAFE state.\n";
                 cout << "Safe Sequence: " << SeqToString(seq) << "\n\n";
             } else {
                 cout << "System is in an UNSAFE state.\n\n";
@@ -202,15 +202,21 @@ int main() {
             auto res = ba.Request(pid, req, &seqAfter);
 
             if (res == BankersAlgorithm::RequestResult::Granted) {
-                cout << "Request granted.\n";
-                cout << "Safe Sequence: " << SeqToString(seqAfter) << "\n\n";
-                ba.PrintStateLikeScreenshot();
+                bool safe = ba.Safety(seqAfter);
+                if (safe) {
+                    cout << "\nSystem is in a SAFE state.\n";
+                } else {
+                    cout << "System is in an UNSAFE state.\n\n";
+                }
+                cout << "Safe Sequence: " << SeqToString(seqAfter) << "";
+                cout << "\nResources allocated to process 1.\n\n";
+                ba.PrintState();
             } else if (res == BankersAlgorithm::RequestResult::ExceedsNeed) {
-                cout << "Error: Request exceeds remaining need for P" << pid << ".\n\n";
+                cout << "\nError: Request exceeds remaining need for P" << pid << ".\n\n";
             } else if (res == BankersAlgorithm::RequestResult::NotAvailable) {
-                cout << "Resources not available. Process P" << pid << " must wait.\n\n";
+                cout << "\nError: Not enough resources not available. P" << pid << " must wait.\n\n";
             } else {
-                cout << "Error: Request would lead to an unsafe state.\n\n";
+                cout << "\nError: Request would lead to an unsafe state.\n\n";
             }
         } else if (choice == 3) {
             break;
